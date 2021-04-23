@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Book {{book.booknum}} {% endblock title %}
+
+{% block body %}
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-0 my-4">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="/static/bookcovers/{{book.booknum}}.jpg" style="height: inherit; width: auto;"
+                class="d-block mx-lg-auto img-fluid img-thumbnail" alt="Image not available" width="700" height="500"
+                loading="lazy">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">{{book.title}}</h1>
+            <p class="lead">Author: {{book.author}}</p>
+            <p class="lead">Publisher: {{book.publisher}}</p>
+            <p class="lead">Genre: {{book.genre}}</p>
+            <p class="lead">ISBN: {{book.isbn}}</p>
+            {% if curruser.is_authenticated %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <button type="button" class="btn btn-primary btn-lg px-4 me-md-2"> {% if book.avl == True %}Borrow{%else %}Queue{% endif %} </button>
+                    {% comment %} <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button> {%endcomment %}
+                </div>
+                {% if book.avl == False %}<br>
+                <div class="alert alert-warning" role="alert">
+                    This book is currently unavailable! You can wait in the queue.
+                </div>{% endif %} 
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    You must be logged in to borrow this book.
+                </div>                          
+            {% endif %}
+        </div>
+    </div>
+    <div class="jumbotron jumbotron-fluid bg-light py-2 px-2 my-2">
+        <div class="container">
+            <h3>Summary</h3>
+            <p class="lead">{{book.summary}}</p>
+        </div>
+    </div>
+</div>
+{% endblock body %}

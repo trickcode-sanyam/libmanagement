@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Book{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block body %}
+    <div class="container my-4 px-4">
+            <h1>Add New Book</h1>
+        {% if curruser.profile.isLibrarian %}
+            <form action="/addbook" method="post">
+                {% csrf_token%}
+                {{form|crispy}}
+                <button type="submit" class = "btn btn-success my-2">Add</button>
+            </form>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                You must be logged in as a librarian to add a new book.
+            </div>                    
+        {% endif %}
+    </div>
+{% endblock body %}

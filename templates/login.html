@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock title %}
+
+{% load crispy_forms_tags %}
+{% block body %}
+    <div class="container my-4 px-4">
+        <h1>Login</h1>
+        {% if form == 'AlreadyLoggedIn' %}
+            <div class="alert alert-info" role="alert">
+            You are already logged in as {{curruser.username}}. To login with a different account, first logout <a href="/logout" class="alert-link">here</a>.
+            </div>
+        {% else %}
+            <form action="/login" method="post">
+                {% csrf_token%}
+                {{form|crispy}}
+                <button type="submit" class = "btn btn-success my-2">Login</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock body %}

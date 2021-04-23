@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+{% block body %}
+    <div class="container my-4">
+        <h4>Hi {% if curruser.is_authenticated %}{{curruser.username}}{% else %}Anonymous{% endif %}</h4>
+        <h1 class= 'display-4' >Welcome to the Library</h1>
+    </div>
+
+{% endblock body %}
+
