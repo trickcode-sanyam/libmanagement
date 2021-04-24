@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock title %}
+{% block body %}
+        <div class="container py-2 my-4">
+            <h3>You searched for {{searchquery}} </h3>
+            {% for searchresult in queryintitle%}
+                <div class="container my-4 bg-light py-2">
+                    <ul>
+                        <li><strong><a href="/book/{{searchresult.booknum}}">{{searchresult.booknum}}: {{searchresult.title}}</a></strong></li>
+                        <li>Author: {{searchresult.author}}</li>
+                    </ul>
+                </div>
+            {% endfor %}
+            {% for searchresult in queryinauthor %}
+                {% if searchresult not in queryintitle %}
+                    <div class="container my-4 bg-light py-2">
+                        <ul>
+                            <li><strong><a href="/book/{{searchresult.booknum}}">{{searchresult.booknum}}: {{searchresult.title}}</a></strong></li>
+                            <li>Author: {{searchresult.author}}</li>
+                        </ul>
+                    </div>                   
+                {% endif %}
+            {% endfor %}
+
+            {% for searchresult in queryinsummary %}
+                {% if searchresult not in queryintitle and searchresult not in queryinauthor%}
+                    <div class="container my-4 bg-light py-2">
+                        <ul>
+                            <li><strong><a href="/book/{{searchresult.booknum}}">{{searchresult.booknum}}: {{searchresult.title}}</a></strong></li>
+                            <li>Author: {{searchresult.author}}</li>
+                        </ul>
+                    </div>                   
+                {% endif %}
+            {% endfor %}
+            {% for searchresult in queryinpublisher%}
+                {% if searchresult not in queryintitle  and searchresult not in queryinauthor and searchresult not in queryinsummary%}
+                    <div class="container my-4 bg-light py-2">
+                        <ul>
+                            <li><strong><a href="/book/{{searchresult.booknum}}">{{searchresult.booknum}}: {{searchresult.title}}</a></strong></li>
+                            <li>Author: {{searchresult.author}}</li>
+                        </ul>
+                    </div>                   
+                {% endif %}
+            {% endfor %}           
+{% endblock body %}

@@ -5,6 +5,18 @@
     <div class="container my-4">
         <h4>Hi {% if curruser.is_authenticated %}{{curruser.username}}{% else %}Anonymous{% endif %}</h4>
         <h1 class= 'display-4' >Welcome to the Library</h1>
+            <div class="container my-4 bg-dark p-4">
+                <h2 class='text-white'>New Arrivals</h2>
+                {% for book in books reversed %}
+                    <div class="container my-4 bg-light py-2">
+                        <ul>
+                            <li><a href="/book/{{book.booknum}}">{{book.booknum}}: {{book.title}}</a></li>
+                            <li> {{book.author}} </li>
+                            <li> {{book.summary|truncatechars:20}}...</li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
     </div>
 
 {% endblock body %}

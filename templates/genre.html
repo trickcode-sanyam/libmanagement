@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} {{genrename}} {% endblock title %}
+{% block body %}
+        <div class="container py-2 my-4">
+            <h3>Books of Category {{genrename}} </h3>
+            {% for book in queryingenre %}
+                    <div class="container my-4 bg-light py-2">
+                        <ul>
+                            <li><strong><a href="/book/{{book.booknum}}">{{book.booknum}}: {{book.title}}</a></strong></li>
+                            <li>Author: {{book.author}}</li>
+                            <li>Publisher: {{book.publisher}}</li>
+                        </ul>
+                    </div>
+            {% endfor %}         
+{% endblock body %}
