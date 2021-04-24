@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .models import Book, Request, Review, ReviewWarning
 from django.contrib.auth.models import User
 from .forms import AddBook, AddRequest, AddReview
+from django.contrib import messages
+
 
 from datetime import date
 def home(request):
@@ -33,6 +35,7 @@ def book(request,bknum):
                     if fromdate < todate and fromdate >= str(date.today()):
                         newrequest = Request(user = user, book = book, fromdate = fromdate, todate = todate, seen=False, accepted = False, reqname = reqname)
                         newrequest.save()
+                        messages.success(request, 'Request sent successfully!')
             elif not request.POST.get('warnreview') == None:
                 reviewid = request.POST.get('reviewid')
                 Review.objects.get(id=reviewid).delete()
@@ -47,6 +50,7 @@ def book(request,bknum):
                     review = request.POST.get('review')
                     newreview = Review(rating = rating, review = review, user = user, book = book)
                     newreview.save()
+                    messages.success(request, 'Review added successfully!')
         reviewset = reversed(Review.objects.filter(book=book))
         if request.user.is_authenticated:
             if request.user.profile.isLibrarian:
@@ -72,6 +76,7 @@ def addbook(request):
             avl = False        
         newbook = Book(title=title, author=author, publisher=publisher, genre=genre, summary=summary, isbn=isbn, avl=avl, booknum=booknum)
         newbook.save()
+        messages.success(request, 'Book added successfully!')
         # handle_uploaded_file(request.FILES['coverimg'],str(booknum))
     return render(request, 'addbook.html',{'curruser': request.user, 'form': AddBook})
 
@@ -103,6 +108,7 @@ def editbook(request,bknum):
                 else:
                     book.avl = False
                 book.save()
+                messages.success(request, "Book details updated successfully! Click on 'Done Editing' to go back.")
                 form = AddBook(initial=
                     {'title': book.title,
                     'author': book.author,
@@ -116,7 +122,8 @@ def editbook(request,bknum):
                 return render(request, 'editbook.html',{'curruser': request.user, 'form': form, 'book': book})
             else:
                 book.delete()
-                return HttpResponse('the book was successfully deleted')
+                messages.success(request, 'Book deleted successfully')
+                return redirect('/')
         else:
             form = AddBook(initial=
                 {'title': book.title,

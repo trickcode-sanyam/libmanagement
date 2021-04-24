@@ -6,5 +6,4 @@ class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=False)
     class Meta: #it needs to be named this
         model = User
-        fields = ['username','email','password1', 'password2'] #order of appearance of fields
-        #username, password1 and password2 are already there in UserCreationForm, we defined email ourselves
+        fields = ['username','email','password1', 'password2']

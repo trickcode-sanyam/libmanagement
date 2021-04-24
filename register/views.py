@@ -5,9 +5,13 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate,login, logout
 from library.models import Request, ReviewWarning
 from datetime import date
+from django.contrib import messages
+
 def register(request):
     logout(request)
     form = RegisterForm()
+    if request.method == 'POST':
+        messages.success(request, 'Your account has been created, now please continue to login.')
     return render(request, 'register.html', {"form":form,'curruser': request.user})
 
 def login_view(request):
@@ -17,9 +21,11 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, 'Login successful!')
             return redirect('/')
         else:
             form = AuthenticationForm()
+            messages.warning(request, 'Login failed!')
             return render(request, 'login.html',{"form":form,'curruser': request.user})
             #also add error message
 
@@ -32,6 +38,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
+    messages.success(request, 'Logout successful!')
     return redirect('/')
 
 def profile(request):
