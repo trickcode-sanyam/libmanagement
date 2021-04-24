@@ -44,6 +44,7 @@ def book(request,bknum):
         if request.user.is_authenticated:
             if request.user.profile.isLibrarian:
                 requestset = reversed(Request.objects.filter(book=book))
+            else: requestset = 'blank'
         else:
             requestset = 'blank'
         return render(request, 'book.html', {'book': book,'curruser': request.user,'form': AddRequest, 'reviewform': AddReview, 'reviews': reviewset, 'requests': requestset})

@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login, logout
 from library.models import Request
+from datetime import date
 def register(request):
     form = RegisterForm()
     return render(request, 'register.html', {"form":form,'curruser': request.user})
@@ -40,11 +41,13 @@ def profile(request):
         if not request.POST.get('accept'+ requestid) == None:
             currreq.accepted = True
         currreq.save()
+    reqset = None
+    acceptedreqs = None
     if request.user.profile.isLibrarian:
         reqset = reversed(Request.objects.all())
     else:
-        if request.user.is_staff:
-            reqset=''
-        else:
+        if not request.user.is_staff:
             reqset = reversed(Request.objects.filter(user=request.user))
-    return render(request, 'profile.html', {'curruser': request.user, 'reqset': reqset})
+            acceptedreqs = Request.objects.filter(user=request.user,accepted=True)
+            print(acceptedreqs)
+    return render(request, 'profile.html', {'curruser': request.user, 'reqset': reqset, 'acceptedreqs': acceptedreqs, 'today': date.today()})
