@@ -51,7 +51,7 @@
         </div>
     </div>
     {% if curruser.is_authenticated %}
-        {% if not curruser.profile.isLibrarian %}
+        {% if not curruser.profile.isLibrarian and not curruser.is_staff %}
             <a name='request'></a>
             <div class="jumbotron jumbotron-fluid bg-light py-2 px-2 my-4">
                 <div class="container">
@@ -75,7 +75,6 @@
                 </div>
             </div>         
         {% endif %}
-  
     {% endif %}
     {% if not requests == 'blank' %}
         <div class="jumbotron jumbotron-fluid bg-light py-2 px-2 my-4">
@@ -115,6 +114,16 @@
                         <li>{{review.user.username}}  {% if review.rating ==  5 %}⭐⭐⭐⭐⭐{% elif review.rating == 4 %}⭐⭐⭐⭐{% elif review.rating == 3 %}⭐⭐⭐{% elif review.rating == 2 %}⭐⭐{% else %}⭐{% endif %}<br>
                         {{review.review}}</li>
                     </ul>
+                    {% if curruser.is_staff %}
+                        <form action="/book/{{book.booknum}}" method="post">
+                            {% csrf_token %}
+                            <input type="number" name="reviewid" value={{review.id}} style = "display:none;">
+                            <input type="number" name="bookid" value={{book.id}} style = "display:none;">
+                            <input type="number" name="userid" value={{review.user.id}} style = "display:none;">
+                            <button type="submit" class = "btn btn-outline-danger my-2" name='warnreview'>Report Review</button>
+                        </form>                    
+                    {% endif %}
+
                 </div>
             {% endfor %}           
         </div>

@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Book, Request, Review
+from .models import Book, Request, Review, ReviewWarning
 from django.contrib.auth.models import User
 from .forms import AddBook, AddRequest, AddReview
+
 from datetime import date
 def home(request):
     allbooks = Book.objects.all().reverse()
@@ -23,7 +24,6 @@ def book(request,bknum):
         book = bookSet[0]
         if request.method == 'POST':
             user = request.user
-            print(request.POST)
             if not request.POST.get('addrequest') == None:
                 gotrequest = AddRequest(request.POST)
                 if gotrequest.is_valid():            
@@ -33,6 +33,13 @@ def book(request,bknum):
                     if fromdate < todate and fromdate >= str(date.today()):
                         newrequest = Request(user = user, book = book, fromdate = fromdate, todate = todate, seen=False, accepted = False, reqname = reqname)
                         newrequest.save()
+            elif not request.POST.get('warnreview') == None:
+                reviewid = request.POST.get('reviewid')
+                Review.objects.get(id=reviewid).delete()
+                book = Book.objects.get(id=request.POST.get('bookid'))
+                user = User.objects.get(id=request.POST.get('userid'))
+                newwarning = ReviewWarning(book=book,user=user)
+                newwarning.save()
             else:
                 gotreview = AddReview(request.POST)
                 if gotreview.is_valid():  

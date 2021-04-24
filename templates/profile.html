@@ -57,7 +57,6 @@
                                 <button class="btn btn-warning mr-2" name='accept{{request.id}}'>Accept</button>
                                 <button class="btn btn-danger mr-2" name='reject{{request.id}}'>Reject</button>                  
                             {% endif %}
-        
                         </form>
                     </div>
                 {% endfor %}
@@ -77,6 +76,19 @@
                     {% endif %}
                 {% endfor %}
             </div>
+            <div class="container py-2">
+                <h3>Warnings</h3>
+                {% for warning in warningset %}
+                    <div class="container my-4 bg-warning py-2">
+                        Your review on <a href="/book/{{warning.book.booknum}}">{{warning.book.booknum}}: {{warning.book.title}}</a> was found offensive and was deleted.
+                        <form action="/profile" method="post">
+                            {% csrf_token %}
+                            <input type="number" name="warningid" value={{warning.id}} style = "display:none;">
+                            <button type="submit" class = "btn btn-link my-2" name='ackwarning'>Acknowledge and Delete</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div> 
             <a name="#requests"></a>           
             <div class="container py-2">
                 <h3>My Requests</h3>

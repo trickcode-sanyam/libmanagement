@@ -30,7 +30,10 @@ class Review(models.Model):
     rating = models.IntegerField()
     review = models.TextField()
     def __str__(self):
-        return str(self.book.booknum) + ' by ' + self.user.username 
+        return str(self.book.booknum) + ' by ' + self.user.username + ': ' + self.review[:20]
 
-    
-
+class ReviewWarning(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.book.booknum) + ' by ' + self.user.username
