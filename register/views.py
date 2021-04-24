@@ -27,7 +27,6 @@ def login_view(request):
             form = AuthenticationForm()
             messages.warning(request, 'Login failed!')
             return render(request, 'login.html',{"form":form,'curruser': request.user})
-            #also add error message
 
     else:
         if request.user.is_authenticated:
@@ -42,24 +41,28 @@ def logout_view(request):
     return redirect('/')
 
 def profile(request):
-    if request.method=='POST':
-        if not request.POST.get('requestid') == None:
-            requestid = request.POST.get('requestid')
-            currreq = Request.objects.get(id=requestid)
-            currreq.seen = True
-            if not request.POST.get('accept'+ requestid) == None:
-                currreq.accepted = True
-            currreq.save()
-        else:
-            warningid = request.POST.get('warningid')
-            ReviewWarning.objects.get(id = warningid).delete()
-    reqset = None
-    if request.user.profile.isLibrarian:
-        reqset = reversed(Request.objects.all())
+    if not request.user.is_authenticated:
+        messages.info(request, 'You must be logged in to access profile.')
+        return redirect('/login')
     else:
-        if not request.user.is_staff:
-            reqset = reversed(Request.objects.filter(user=request.user))
-            acceptedreqs = Request.objects.filter(user=request.user,accepted=True)
-            warningset = reversed(ReviewWarning.objects.filter(user=request.user))
-            return render(request, 'profile.html', {'curruser': request.user, 'reqset': reqset, 'acceptedreqs': acceptedreqs, 'warningset': warningset,  'today': date.today()})
-    return render(request, 'profile.html', {'curruser': request.user, 'reqset': reqset, 'today': date.today()})
+        if request.method=='POST':
+            if not request.POST.get('requestid') == None:
+                requestid = request.POST.get('requestid')
+                currreq = Request.objects.get(id=requestid)
+                currreq.seen = True
+                if not request.POST.get('accept'+ requestid) == None:
+                    currreq.accepted = True
+                currreq.save()
+            else:
+                warningid = request.POST.get('warningid')
+                ReviewWarning.objects.get(id = warningid).delete()
+        reqset = None
+        if request.user.profile.isLibrarian:
+            reqset = reversed(Request.objects.all())
+        else:
+            if not request.user.is_staff:
+                reqset = reversed(Request.objects.filter(user=request.user))
+                acceptedreqs = Request.objects.filter(user=request.user,accepted=True)
+                warningset = reversed(ReviewWarning.objects.filter(user=request.user))
+                return render(request, 'profile.html', {'curruser': request.user, 'reqset': reqset, 'acceptedreqs': acceptedreqs, 'warningset': warningset,  'today': date.today()})
+        return render(request, 'profile.html', {'curruser': request.user, 'reqset': reqset, 'today': date.today()})

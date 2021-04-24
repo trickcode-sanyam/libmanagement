@@ -19,9 +19,11 @@ def home(request):
 def book(request,bknum):
     bookSet = Book.objects.filter(booknum = bknum)
     if len(bookSet) == 0:
-        return HttpResponse("No such book exists")       
+        messages.warning(request,'No book found with number '+str(bknum))  
+        return redirect('/')
     elif len(bookSet) > 1:
-        return HttpResponse("More than 1 book with same number exist")
+        messages.warning(request,'More than 1 book found with number '+str(bknum))  
+        return redirect('/')
     else:
         book = bookSet[0]
         if request.method == 'POST':
@@ -88,9 +90,11 @@ def addbook(request):
 def editbook(request,bknum):
     bookSet = Book.objects.filter(booknum = bknum)
     if len(bookSet) == 0:
-        return HttpResponse("No such book exists")       
+        messages.warning(request,'No book found with number '+str(bknum))  
+        return redirect('/')
     elif len(bookSet) > 1:
-        return HttpResponse("More than 1 book with same number exist")
+        messages.warning(request,'More than 1 book found with number '+str(bknum))  
+        return redirect('/')
     else:
         book = bookSet[0]
         if request.method=='POST':

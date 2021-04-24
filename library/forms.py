@@ -9,8 +9,7 @@ class AddBook(forms.Form):
     isbn = forms.CharField(max_length=20,label='ISBN')
     booknum = forms.IntegerField()
     avl = forms.BooleanField(label='Available',initial=True,required=False)
-    # coverimg = forms.FileField(label='Cover Image')
-    # coverimg = forms.FileField(upload)
+
 
 class DateInput(forms.DateInput):
     input_type = 'date' #default is text

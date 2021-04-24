@@ -29,8 +29,6 @@
                         {%else %}
                             <button type="button" class="btn btn-secondary btn-lg px-4 me-md-2" onclick="window.location.href = '#request';">Queue</button>
                         {% endif %}
-                        
-                        {% comment %} <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button> {%endcomment %}
                     </div>
                     {% if book.avl == False %}<br>
                     <div class="alert alert-warning" role="alert">
@@ -83,7 +81,6 @@
             {% for request in requests %}
                 <div class="container my-4 bg-light py-2">
                     <ul>
-                        {% comment %} <li>Requested on {{request.when}}</li> {% endcomment %}
                         <li><a href="/book/{{request.book.booknum}}">{{request.book.booknum}}: {{request.book.title}}</a></li>
                         <li>{{request.user.username}}</li>
                         <li>From {{request.fromdate}}</li>
@@ -110,7 +107,6 @@
             {% for review in reviews %}
                 <div class="container my-4 bg-light">
                     <ul>
-                        {% comment %} <li>Requested on {{request.when}}</li> {% endcomment %}
                         <li>{{review.user.username}}  {% if review.rating ==  5 %}⭐⭐⭐⭐⭐{% elif review.rating == 4 %}⭐⭐⭐⭐{% elif review.rating == 3 %}⭐⭐⭐{% elif review.rating == 2 %}⭐⭐{% else %}⭐{% endif %}<br>
                         {{review.review}}</li>
                     </ul>

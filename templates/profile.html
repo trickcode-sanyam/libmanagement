@@ -51,7 +51,6 @@
                 {% for request in reqset %}
                     <div class="container my-4 bg-light py-2">
                         <ul>
-                            {% comment %} <li>Requested on {{request.when}}</li> {% endcomment %}
                             <li><a href="/book/{{request.book.booknum}}">{{request.book.booknum}}: {{request.book.title}}</a></li>
                             <li>{{request.user.username}}</li>
                             <li>From {{request.fromdate}}</li>
@@ -104,7 +103,6 @@
                 {% for request in reqset %}
                     <div class="container my-4 bg-light py-2">
                         <ul>
-                            {% comment %} <li>Requested on {{request.when}}</li> {% endcomment %}
                             <li><a href="/book/{{request.book.booknum}}">{{request.book.booknum}}: {{request.book.title}}</a></li>
                             <li>From {{request.fromdate}}</li>
                             <li>To {{request.todate}}</li>
