@@ -22,9 +22,16 @@
         <h1 class="display-5 fw-bold">{{curruser.username}}</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">This is something about me</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Primary button</button>
-            <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="window.location.href = '/logout';">Logout</button>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center"> 
+                {% if curruser.is_staff %}
+                    <button type="button" class="btn btn-outline-primary btn-lg px-4 me-sm-3" onclick="window.location.href = '/admin';">Admin Dashboard</button>
+                {% endif %}
+                {% if curruser.profile.isLibrarian %}
+                    <button type="button" class="btn btn-outline-secondary btn-lg px-4 me-sm-3" onclick="window.location.href = '/addbook';">Add New Book</button>
+                {% else %}
+                    <button type="button" class="btn btn-outline-primary btn-lg px-4 me-sm-3" onclick="window.location.href = '#requests';">My Requests</button>
+                {% endif %}
+                <button type="button" class="btn btn-outline-warning btn-lg px-4" onclick="window.location.href = '/logout';">Logout</button>
             </div>
         </div>
     </div>    
@@ -52,7 +59,6 @@
                             {% endif %}
         
                         </form>
-
                     </div>
                 {% endfor %}
             </div>
@@ -70,7 +76,8 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-            </div>           
+            </div>
+            <a name="#requests"></a>           
             <div class="container py-2">
                 <h3>My Requests</h3>
                 {% for request in reqset %}
