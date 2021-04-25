@@ -7,9 +7,9 @@ class AddBook(forms.Form):
     genre = forms.CharField(max_length=100)
     summary = forms.CharField(widget=forms.Textarea)
     isbn = forms.CharField(max_length=20,label='ISBN')
-    booknum = forms.IntegerField()
+    booknum = forms.IntegerField(label='Uniqe Book Number')
+    coverimg = forms.ImageField(label = 'Cover Image',required=False)
     avl = forms.BooleanField(label='Available',initial=True,required=False)
-
 
 class DateInput(forms.DateInput):
     input_type = 'date' #default is text

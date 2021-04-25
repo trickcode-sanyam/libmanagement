@@ -71,11 +71,12 @@ def addbook(request):
         isbn = request.POST.get('isbn')
         booknum = request.POST.get('booknum')
         isavl = request.POST.get('avl')
+        coverimg = request.FILES.get('coverimg')
         if not isavl == None:
             avl = True
         else:
             avl = False        
-        newbook = Book(title=title, author=author, publisher=publisher, genre=genre, summary=summary, isbn=isbn, avl=avl, booknum=booknum)
+        newbook = Book(title=title, author=author, publisher=publisher, genre=genre, summary=summary, isbn=isbn, avl=avl, booknum=booknum, coverimg= coverimg)
         newbook.save()
         messages.success(request, 'Book added successfully!')
         # handle_uploaded_file(request.FILES['coverimg'],str(booknum))

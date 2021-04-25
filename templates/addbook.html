@@ -7,8 +7,9 @@
     <div class="container my-4 px-4">
             <h1>Add New Book</h1>
         {% if curruser.profile.isLibrarian %}
-            <form action="/addbook" method="post">
+            <form action="/addbook" method="post" enctype="multipart/form-data">
                 {% csrf_token%}
+                {{form.media}}
                 {{form|crispy}}
                 <button type="submit" class = "btn btn-success my-2">Add</button>
             </form>
