@@ -1,16 +1,22 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate,login, logout
+from django.contrib.auth import authenticate,login, logout 
 from library.models import Request, ReviewWarning
 from datetime import date, timedelta
 from django.contrib import messages
-
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 def register(request):
     logout(request)
     form = RegisterForm()
     if request.method == 'POST':
-        messages.success(request, 'Your account has been created, now please continue to login.')
+        f = UserCreationForm(request.POST)
+        if f.is_valid():
+            f.save()
+            messages.success(request, 'Your account has been created, now please continue to login.')
+        else:
+            messages.warning(request, 'Registration failed.')
     return render(request, 'register.html', {"form":form,'curruser': request.user})
 
 def login_view(request):
