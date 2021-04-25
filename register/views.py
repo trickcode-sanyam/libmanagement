@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
 from django.contrib.auth import authenticate,login, logout
 from library.models import Request, ReviewWarning
 from datetime import date

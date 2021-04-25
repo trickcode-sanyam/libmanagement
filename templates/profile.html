@@ -51,7 +51,7 @@
                 {% for request in reqset %}
                     <div class="container my-4 bg-light py-2">
                         <ul>
-                            <li><a href="/book/{{request.book.booknum}}">{{request.book.booknum}}: {{request.book.title}}</a></li>
+                            <li><span class="font-weight-light"> { {{request.ondate}} } </span><a href="/book/{{request.book.booknum}}">{{request.book.booknum}}: {{request.book.title}}</a></li>
                             <li>{{request.user.username}}</li>
                             <li>From {{request.fromdate}}</li>
                             <li>To {{request.todate}}</li>
@@ -103,7 +103,7 @@
                 {% for request in reqset %}
                     <div class="container my-4 bg-light py-2">
                         <ul>
-                            <li><a href="/book/{{request.book.booknum}}">{{request.book.booknum}}: {{request.book.title}}</a></li>
+                            <li><span class="font-weight-light"> { {{request.ondate}} } </span><a href="/book/{{request.book.booknum}}">{{request.book.booknum}}: {{request.book.title}}</a></li>
                             <li>From {{request.fromdate}}</li>
                             <li>To {{request.todate}}</li>
                         </ul>

@@ -1,12 +1,10 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
 from .models import Book, Request, Review, ReviewWarning
 from django.contrib.auth.models import User
 from .forms import AddBook, AddRequest, AddReview
 from django.contrib import messages
-
-
 from datetime import date
+
 def home(request):
     allbooks = Book.objects.all().reverse()
     l = len(allbooks)
@@ -33,9 +31,8 @@ def book(request,bknum):
                 if gotrequest.is_valid():            
                     fromdate = request.POST.get('fromdate')
                     todate = request.POST.get('todate')
-                    reqname = str(book.booknum) + ' by ' + user.username +' from ' + str(fromdate) + ' to ' + str(todate)
                     if fromdate < todate and fromdate >= str(date.today()):
-                        newrequest = Request(user = user, book = book, fromdate = fromdate, todate = todate, seen=False, accepted = False, reqname = reqname)
+                        newrequest = Request(user = user, book = book, fromdate = fromdate, todate = todate, seen=False, accepted = False)
                         newrequest.save()
                         messages.success(request, 'Request sent successfully!')
             elif not request.POST.get('warnreview') == None:
@@ -53,6 +50,8 @@ def book(request,bknum):
                     newreview = Review(rating = rating, review = review, user = user, book = book)
                     newreview.save()
                     messages.success(request, 'Review added successfully!')
+                else:
+                    messages.warning(request, "Couldn't add review!")
         reviewset = reversed(Review.objects.filter(book=book))
         if request.user.is_authenticated:
             if request.user.profile.isLibrarian:
@@ -143,13 +142,14 @@ def editbook(request,bknum):
 
 def search(request):
     if request.method=='POST':
-        searchquery = request.POST.get('query')
-        queryintitle = Book.objects.filter(title__contains=searchquery)
-        queryinauthor = Book.objects.filter(author__contains=searchquery)
-        queryinsummary = Book.objects.filter(summary__contains=searchquery)
-        queryinpublisher = Book.objects.filter(publisher__contains=searchquery)
-        return render(request, 'searchresults.html', {'curruser': request.user , 'queryintitle': queryintitle, 'queryinauthor': queryinauthor, 'queryinsummary': queryinsummary, 'queryinpublisher': queryinpublisher, 'searchquery': searchquery})
-    # return redirect('/')
+        searchquery = request.POST.get('query').strip()
+        if not searchquery == '':
+            queryintitle = Book.objects.filter(title__contains=searchquery)
+            queryinauthor = Book.objects.filter(author__contains=searchquery)
+            queryinsummary = Book.objects.filter(summary__contains=searchquery)
+            queryinpublisher = Book.objects.filter(publisher__contains=searchquery)
+            return render(request, 'searchresults.html', {'curruser': request.user , 'queryintitle': queryintitle, 'queryinauthor': queryinauthor, 'queryinsummary': queryinsummary, 'queryinpublisher': queryinpublisher, 'searchquery': searchquery})
+    return redirect('/')
 
 def author(request,authorname):
     queryinauthor = Book.objects.filter(author=authorname)

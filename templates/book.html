@@ -107,7 +107,8 @@
             {% for review in reviews %}
                 <div class="container my-4 bg-light">
                     <ul>
-                        <li>{{review.user.username}}  {% if review.rating ==  5 %}⭐⭐⭐⭐⭐{% elif review.rating == 4 %}⭐⭐⭐⭐{% elif review.rating == 3 %}⭐⭐⭐{% elif review.rating == 2 %}⭐⭐{% else %}⭐{% endif %}<br>
+                        <li>{{review.user.username}}  {% if review.rating ==  5 %}⭐⭐⭐⭐⭐{% elif review.rating == 4 %}⭐⭐⭐⭐{% elif review.rating == 3 %}⭐⭐⭐{% elif review.rating == 2 %}⭐⭐{% else %}⭐{% endif %} <span class="font-weight-light"> { {{review.ondate}} } </span>
+                        <br>
                         {{review.review}}</li>
                     </ul>
                     {% if curruser.is_staff %}

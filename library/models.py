@@ -20,20 +20,21 @@ class Request(models.Model):
     todate = models.DateField(auto_now=False, auto_now_add=False)
     seen = models.BooleanField()
     accepted = models.BooleanField()
-    reqname = models.CharField(max_length=200)
+    ondate = models.DateField(auto_now_add=True)
     def __str__(self):
-        return self.reqname
-
+        return 'On ' + str(self.ondate) + ' by ' + self.user.username + ' (' + str(self.fromdate) + ' to ' + str(self.todate) + ')'
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     rating = models.IntegerField()
     review = models.TextField()
+    ondate = models.DateField(auto_now_add=True)
     def __str__(self):
-        return str(self.book.booknum) + ' by ' + self.user.username + ': ' + self.review[:20]
+        return str(self.book.booknum) + ' by ' + self.user.username + ': ' + self.review[:20] + '(' + str(self.ondate) + ')'
 
 class ReviewWarning(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    ondate = models.DateField(auto_now_add=True)
     def __str__(self):
-        return str(self.book.booknum) + ' by ' + self.user.username
+        return str(self.book.booknum) + ' by ' + self.user.username + '(dated ' + str(self.ondate) + ')'
