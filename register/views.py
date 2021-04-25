@@ -3,7 +3,7 @@ from .forms import RegisterForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login, logout
 from library.models import Request, ReviewWarning
-from datetime import date
+from datetime import date, timedelta
 from django.contrib import messages
 
 def register(request):
@@ -52,6 +52,14 @@ def profile(request):
                 if not request.POST.get('accept'+ requestid) == None:
                     currreq.accepted = True
                 currreq.save()
+            elif not request.POST.get('accreqid') == None:
+                accreqid = request.POST.get('accreqid')
+                currreq = Request.objects.get(id=accreqid)
+                newfrom = currreq.todate
+                newto = newfrom + timedelta(days=7)
+                newreq = Request(fromdate=newfrom, todate= newto, user=request.user, book=currreq.book, seen=False, accepted=False)
+                newreq.save()
+                messages.success(request, 'Sent extension request.')
             else:
                 warningid = request.POST.get('warningid')
                 ReviewWarning.objects.get(id = warningid).delete()

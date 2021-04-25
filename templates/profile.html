@@ -74,13 +74,18 @@
                 <h3>Upcoming due dates</h3>
                 {% for accreq in acceptedreqs %}
                     {% if accreq.fromdate < today and accreq.todate > today %}
-                        <div class="container my-4 bg-light py-2">
+                        <div class="container my-2 bg-light py-2">
                             <ul>
                                 <li><a href="/book/{{accreq.book.booknum}}">{{accreq.book.booknum}}: {{accreq.book.title}}</a></li>
                                 <li>Author: {{accreq.book.author}}</li>
                                 <li>Due on: {{accreq.todate}}</li>
                             </ul>
-                        </div>
+                            <form action="/profile" method="post">
+                                {% csrf_token %}
+                                <input type="number" name="accreqid" value={{accreq.id}} style = "display:none;">
+                                <button type="submit" class = "btn btn-link" name='extend'>Request 7 days extension</button>
+                            </form>                             
+                        </div>                            
                     {% endif %}
                 {% endfor %}
             </div>
